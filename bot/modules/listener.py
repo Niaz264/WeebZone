@@ -278,7 +278,7 @@ class MirrorLeechListener:
             logleechwarn = ''
         if not self.isPrivate and INCOMPLETE_TASK_NOTIFIER and DB_URI is not None:
             DbManger().rm_complete_task(self.message.link)
-        msg = f"<b>╭ Name: </b><code>{escape(name)}</code>\n<b>├📐 Size: </b>{size}"
+        msg = f"<b>╭ Name: </b><code>{escape(name)}</code>\n<b>├ Size: </b>{size}"
         if self.isLeech:
             if SOURCE_LINK is True:
                 try:
