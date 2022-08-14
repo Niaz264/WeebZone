@@ -231,6 +231,8 @@ def aria2c_init():
         log_error(f"Aria2c initializing error: {e}")
 Thread(target=aria2c_init).start()
 
+
+
 try:
     MEGA_KEY = getConfig('MEGA_API_KEY')
     if len(MEGA_KEY) == 0:
@@ -600,33 +602,33 @@ except KeyError:
 try:
     AUTHOR_NAME = getConfig('AUTHOR_NAME')
     if len(AUTHOR_NAME) == 0:
-        AUTHOR_NAME = 'Karan'
+        AUTHOR_NAME = 'Ajay'
 except KeyError:
-    AUTHOR_NAME = 'Karan'
+    AUTHOR_NAME = 'Ajay'
 try:
     AUTHOR_URL = getConfig('AUTHOR_URL')
     if len(AUTHOR_URL) == 0:
-        AUTHOR_URL = 'https://t.me/WeebZone_updates'
+        AUTHOR_URL = 'https://t.me/'
 except KeyError:
-    AUTHOR_URL = 'https://t.me/WeebZone_updates'
+    AUTHOR_URL = 'https://t.me/'
 try:
     GD_INFO = getConfig('GD_INFO')
     if len(GD_INFO) == 0:
-        GD_INFO = 'Uploaded by WeebZone Mirror Bot'
+        GD_INFO = 'Uploaded by Ajay Mirror Bot'
 except KeyError:
-    GD_INFO = 'Uploaded by WeebZone Mirror Bot'
+    GD_INFO = 'Uploaded by Ajay Mirror Bot'
 try:
     TITLE_NAME = getConfig('TITLE_NAME')
     if len(TITLE_NAME) == 0:
-        TITLE_NAME = 'WeebZone-Mirror-Search'
+        TITLE_NAME = 'Ajay-Mirror-Search'
 except KeyError:
-    TITLE_NAME = 'WeebZone-Mirror-Search'
-try:
-    FINISHED_PROGRESS_STR = getConfig('FINISHED_PROGRESS_STR') 
-    UN_FINISHED_PROGRESS_STR = getConfig('UN_FINISHED_PROGRESS_STR')
-except:
-    FINISHED_PROGRESS_STR = '●' # '■'
-    UN_FINISHED_PROGRESS_STR = '○' # '□'
+    TITLE_NAME = 'Ajay-Mirror-Search'
+# try:
+   # FINISHED_PROGRESS_STR = getConfig('FINISHED_PROGRESS_STR') 
+   # UN_FINISHED_PROGRESS_STR = getConfig('UN_FINISHED_PROGRESS_STR')
+# except:
+   # FINISHED_PROGRESS_STR = '●' # '■'
+   # UN_FINISHED_PROGRESS_STR = '○' # '□'
 try:
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
