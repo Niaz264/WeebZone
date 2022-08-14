@@ -62,9 +62,9 @@ def getHerokuDetails(h_api_key, h_app_name):
         abc += f'<b></b>\n'
         abc += f'<b>╭─《🌐 HEROKU STATS 🌐》</b>\n'
         abc += f'<b>│</b>\n'
-        abc += f"<b>├ 💪🏻 FULL</b>: {get_readable_time(account_quota)}\n"
-        abc += f"<b>├ 👎🏻 USED</b>: {get_readable_time(quota_used)}\n"
-        abc += f"<b>├ 👍🏻 FREE</b>: {get_readable_time(quota_remain)}\n"
+        abc += f"<b>├  FULL</b>: {get_readable_time(account_quota)}\n"
+        abc += f"<b>├  USED</b>: {get_readable_time(quota_used)}\n"
+        abc += f"<b>├  FREE</b>: {get_readable_time(quota_remain)}\n"
         # App Quota
         AppQuotaUsed = 0
         OtherAppsUsage = 0
@@ -84,10 +84,10 @@ def getHerokuDetails(h_api_key, h_app_name):
                     LOGGER.error(t)
                     pass
         LOGGER.info(f"This App: {str(app.name)}")
-        abc += f"<b>├ 🎃 APP USAGE:</b> {get_readable_time(AppQuotaUsed)}\n"
-        abc += f"<b>├ 🗑️ OTHER APP:</b> {get_readable_time(OtherAppsUsage)}\n"
+        abc += f"<b>├  APP USAGE:</b> {get_readable_time(AppQuotaUsed)}\n"
+        abc += f"<b>├  OTHER APP:</b> {get_readable_time(OtherAppsUsage)}\n"
         abc += f'<b>│</b>\n'
-        abc += f'<b>╰─《 ☣️ @krn270101 ☣️ 》</b>'
+        abc += f'<b>╰─《 ☣️ @VjMirrorRoBot ☣️ 》</b>'
         return abc
     except Exception as g:
         LOGGER.error(g)
@@ -95,13 +95,13 @@ def getHerokuDetails(h_api_key, h_app_name):
 
 
 
-IMAGE_X = "https://telegra.ph/file/9c2c7250397f4ed2eed20.jpg"
+IMAGE_X = "https://telegra.ph/file/c9645b71e825c217732f4.jpg"
 
 now=datetime.now(pytz.timezone(f'{TIMEZONE}'))
 
 def stats(update, context):
     if ospath.exists('.git'):
-        last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd \n├ 🛠<b>From</b> %cr'"], shell=True).decode()
+        last_commit = check_output(["git log -1 --date=short --pretty=format:'%cd \n<b>├  From</b> %cr'"], shell=True).decode()
     else:
         last_commit = 'No UPSTREAM_REPO'
     currentTime = get_readable_time(time() - botStartTime)
@@ -126,25 +126,25 @@ def stats(update, context):
     mem_u = get_readable_file_size(memory.used)
     stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
             f'<b>│</b>\n' \
-            f'<b>├ 🛠 𝙲𝙾𝙼𝙼𝙸𝚃 𝙳𝙰𝚃𝙴:</b> {last_commit}\n'\
-            f'<b>├ 🟢 𝙾𝙽𝙻𝙸𝙽𝙴 𝚃𝙸𝙼𝙴:</b> {currentTime}\n'\
-            f'<b>├ 🟢 Sᴛᴀʀᴛᴇᴅ Aᴛ:</b> {current}\n'\
-            f'<b>├ ☠️ 𝙾𝚂 𝚄𝙿𝚃𝙸𝙼𝙴:</b> {osUptime}\n'\
-            f'<b>├ 💾 𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴:</b> {total}\n'\
-            f'<b>├ 📀 𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴 𝚄𝚂𝙴𝙳:</b> {used}\n'\
-            f'<b>├ 💿 𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴 𝙵𝚁𝙴𝙴:</b> {free}\n'\
-            f'<b>├ 🔺 𝚄𝙿𝙻𝙾𝙰𝙳 𝙳𝙰𝚃𝙰:</b> {sent}\n'\
-            f'<b>├ 🔻 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝙳𝙰𝚃𝙰:</b> {recv}\n'\
-            f'<b>├ 🖥️ 𝙲𝙿𝚄 𝚄𝚂𝙰𝙶𝙴:</b> {cpuUsage}%\n'\
-            f'<b>├ 🎮 𝚁𝙰𝙼:</b> {mem_p}%\n'\
-            f'<b>├ 👸 𝙳𝙸𝚂𝙺 𝚄𝚂𝙴𝙳:</b> {disk}%\n'\
-            f'<b>├ 💽 𝙿𝙷𝚈𝚂𝙸𝙲𝙰𝙻 𝙲𝙾𝚁𝙴𝚂:</b> {p_core}\n'\
-            f'<b>├ 🍥 𝚃𝙾𝚃𝙰𝙻 𝙲𝙾𝚁𝙴𝚂:</b> {t_core}\n'\
-            f'<b>├ ✳ 𝚂𝚆𝙰𝙿:</b> {swap_t}\n'\
-            f'<b>├ 👸 𝚂𝚆𝙰𝙿 𝚄𝚂𝙴𝙳:</b> {swap_p}%\n'\
-            f'<b>├ ☁ 𝚃𝙾𝚃𝙰𝙻 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_t}\n'\
-            f'<b>├ 💃 𝙵𝚁𝙴𝙴 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_a}\n'\
-            f'<b>╰ 👰 𝚄𝚂𝙰𝙶𝙴 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_u}\n'
+            f'<b>├  𝙲𝙾𝙼𝙼𝙸𝚃 𝙳𝙰𝚃𝙴:</b> {last_commit}\n'\
+            f'<b>├  𝙾𝙽𝙻𝙸𝙽𝙴 𝚃𝙸𝙼𝙴:</b> {currentTime}\n'\
+            f'<b>├  Sᴛᴀʀᴛᴇᴅ Aᴛ:</b> {current}\n'\
+            f'<b>├  𝙾𝚂 𝚄𝙿𝚃𝙸𝙼𝙴:</b> {osUptime}\n'\
+            f'<b>├  𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴:</b> {total}\n'\
+            f'<b>├  𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴 𝚄𝚂𝙴𝙳:</b> {used}\n'\
+            f'<b>├  𝙳𝙸𝚂𝙺 𝚂𝙿𝙰𝙲𝙴 𝙵𝚁𝙴𝙴:</b> {free}\n'\
+            f'<b>├  𝚄𝙿𝙻𝙾𝙰𝙳 𝙳𝙰𝚃𝙰:</b> {sent}\n'\
+            f'<b>├  𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝙳𝙰𝚃𝙰:</b> {recv}\n'\
+            f'<b>├  𝙲𝙿𝚄 𝚄𝚂𝙰𝙶𝙴:</b> {cpuUsage}%\n'\
+            f'<b>├  𝚁𝙰𝙼:</b> {mem_p}%\n'\
+            f'<b>├  𝙳𝙸𝚂𝙺 𝚄𝚂𝙴𝙳:</b> {disk}%\n'\
+            f'<b>├  𝙿𝙷𝚈𝚂𝙸𝙲𝙰𝙻 𝙲𝙾𝚁𝙴𝚂:</b> {p_core}\n'\
+            f'<b>├  𝚃𝙾𝚃𝙰𝙻 𝙲𝙾𝚁𝙴𝚂:</b> {t_core}\n'\
+            f'<b>├  𝚂𝚆𝙰𝙿:</b> {swap_t}\n'\
+            f'<b>├  𝚂𝚆𝙰𝙿 𝚄𝚂𝙴𝙳:</b> {swap_p}%\n'\
+            f'<b>├  𝚃𝙾𝚃𝙰𝙻 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_t}\n'\
+            f'<b>├  𝙵𝚁𝙴𝙴 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_a}\n'\
+            f'<b>╰  𝚄𝚂𝙰𝙶𝙴 𝙾𝙵 𝙼𝙴𝙼𝙾𝚁𝚈:</b> {mem_u}\n'
     heroku = getHerokuDetails(HEROKU_API_KEY, HEROKU_APP_NAME)
     if heroku: stats += heroku 
            
@@ -153,8 +153,8 @@ def stats(update, context):
 
 def start(update, context):
     buttons = ButtonMaker()
-    buttons.buildbutton("😎 Master", "https://t.me/krn_adhikari")
-    buttons.buildbutton("🔥 Group", "https://t.me/WeebZone_updates")
+    buttons.buildbutton("😎 Master", "https://t.me/")
+    buttons.buildbutton("🔥 Group", "https://t.me/")
     reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''
@@ -168,14 +168,14 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
 def restart(update, context):
     cmd = update.effective_message.text.split(' ', 1)
     dynoRestart = False
-    dynoKill = False
+   # dynoKill = False
     if len(cmd) == 2:
         dynoRestart = (cmd[1].lower()).startswith('d')
-        dynoKill = (cmd[1].lower()).startswith('k')
+       # dynoKill = (cmd[1].lower()).startswith('k')
     if (not HEROKU_API_KEY) or (not HEROKU_APP_NAME):
         LOGGER.info("If you want Heroku features, fill HEROKU_APP_NAME HEROKU_API_KEY vars.")
         dynoRestart = False
-        dynoKill = False
+      #  dynoKill = False
     if dynoRestart:
         LOGGER.info("Dyno Restarting.")
         restart_message = sendMessage("Dyno Restarting.", context.bot, update.message)
@@ -185,16 +185,16 @@ def restart(update, context):
         heroku_conn = heroku3.from_key(HEROKU_API_KEY)
         app = heroku_conn.app(HEROKU_APP_NAME)
         app.restart()
-    elif dynoKill:
-        LOGGER.info("Killing Dyno. MUHAHAHA")
-        sendMessage("Killed Dyno.", context.bot, update.message)
-        alive.kill()
-        clean_all()
-        heroku_conn = heroku3.from_key(HEROKU_API_KEY)
-        app = heroku_conn.app(HEROKU_APP_NAME)
-        proclist = app.process_formation()
-        for po in proclist:
-            app.process_formation()[po.type].scale(0)
+   # elif dynoKill:
+       # LOGGER.info("Killing Dyno. MUHAHAHA")
+       # sendMessage("Killed Dyno.", context.bot, update.message)
+       # alive.kill()
+       # clean_all()
+       # heroku_conn = heroku3.from_key(HEROKU_API_KEY)
+       # app = heroku_conn.app(HEROKU_APP_NAME)
+       # proclist = app.process_formation()
+       # for po in proclist:
+          #  app.process_formation()[po.type].scale(0)
     else:
         LOGGER.info("Normally Restarting.")
         restart_message = sendMessage("Normally Restarting.", context.bot, update.message)
@@ -224,7 +224,7 @@ def log(update, context):
 
 
 help_string = '''
-<b><a href='https://github.com/codewithweeb/mirror-with-weeb'>WeebZone</a></b> - The Ultimate Telegram MIrror-Leech Bot to Upload Your File & Link in Google Drive & Telegram
+<b><a href='https://github.com/'>AjayMirror</a></b> - The Ultimate Telegram MIrror-Leech Bot to Upload Your File & Link in Google Drive & Telegram
 Choose a help category:
 '''
 
@@ -263,13 +263,13 @@ help_string_telegraph_user = f'''
 <br><br>
 • <b>/{BotCommands.DeleteCommand}</b> [drive_url]: Delete file/folder from Google Drive (Only Owner & Sudo)
 <br><br>
-• <b>/{BotCommands.WatchCommand}</b> [yt-dlp supported link]: Mirror yt-dlp supported link. Send <b>/{BotCommands.WatchCommand}</b> for more help
+• <b>/{BotCommands.YtdlCommand}</b> [yt-dlp supported link]: Mirror yt-dlp supported link. Send <b>/{BotCommands.YtdlCommand}</b> for more help
 <br><br>
-• <b>/{BotCommands.ZipWatchCommand}</b> [yt-dlp supported link]: Mirror yt-dlp supported link as zip
+• <b>/{BotCommands.YtdlZipCommand}</b> [yt-dlp supported link]: Mirror yt-dlp supported link as zip
 <br><br>
-• <b>/{BotCommands.LeechWatchCommand}</b> [yt-dlp supported link]: Leech yt-dlp supported link
+• <b>/{BotCommands.YtdlLeechCommand}</b> [yt-dlp supported link]: Leech yt-dlp supported link
 <br><br>
-• <b>/{BotCommands.LeechZipWatchCommand}</b> [yt-dlp supported link]: Leech yt-dlp supported link as zip
+• <b>/{BotCommands.YtdlZipLeechCommand}</b> [yt-dlp supported link]: Leech yt-dlp supported link as zip
 <br><br>
 • <b>/{BotCommands.LeechSetCommand}</b>: Leech settings
 <br><br>
@@ -305,7 +305,7 @@ help_string_telegraph_user = f'''
 '''
 
 help_user = telegraph.create_page(
-    title='😄 WeebZone Help 😄',
+    title='😄 Ajay-Mirror Help 😄',
     content=help_string_telegraph_user)["path"]
 
 help_string_telegraph_admin = f'''
@@ -329,13 +329,13 @@ help_string_telegraph_admin = f'''
 '''
 
 help_admin = telegraph.create_page(
-    title='😄 WeebZone Help',
+    title='😄 Ajay-Mirror Help',
     content=help_string_telegraph_admin)["path"]
 
 def bot_help(update, context):
     button = ButtonMaker()
-    button.buildbutton("👤 User", f"https://telegra.ph/{help_user}")
-    button.buildbutton("🛡️ Admin", f"https://telegra.ph/{help_admin}")
+    button.buildbutton("👤 User", f"https://graph.org/{help_user}")
+    button.buildbutton("🛡️ Admin", f"https://graph.org/{help_admin}")
     sendMarkup(help_string, context.bot, update.message, InlineKeyboardMarkup(button.build_menu(2)))
 
        
