@@ -9,7 +9,7 @@ from urllib.request import urlopen
 from telegram import InlineKeyboardMarkup
 
 from bot.helper.telegram_helper.bot_commands import BotCommands
-from bot import FINISHED_PROGRESS_STR, UN_FINISHED_PROGRESS_STR, download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR, WEB_PINCODE, BASE_URL
+from bot import download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR, WEB_PINCODE, BASE_URL
 from bot.helper.telegram_helper.button_build import ButtonMaker
 
 import shutil
@@ -41,16 +41,20 @@ class MirrorStatus:
     STATUS_SEEDING = "Seeding...🌧"
 
 class EngineStatus:
-    STATUS_ARIA = "Aria2c v1.35.0"
-    STATUS_GD = "Google Api v2.51.0"
-    STATUS_MEGA = "MegaSDK v3.12.0"
-    STATUS_QB = "qBittorrent v4.3.9"
-    STATUS_TG = "Pyrogram v2.0.27"
-    STATUS_YT = "YT-dlp v22.5.18"
-    STATUS_EXT = "Extract | pExtract"
-    STATUS_SPLIT = "FFmpeg v2.9.1"
-    STATUS_ZIP = "p7zip v16.02"
+    STATUS_ARIA = "<b>Aria2c v1.35.0</b>"
+    STATUS_GD = "<b>Google Api v2.51.0</b>"
+    STATUS_MEGA = "<b>MegaSDK v3.12.0</b>"
+    STATUS_QB = "<b>qBittorrent v4.3.9</b>"
+    STATUS_TG = "<b>Pyrogram v2.0.27</b>"
+    STATUS_YT = "<b>YT-dlp v22.5.18</b>"
+    STATUS_EXT = "<b>Extract | pExtract</b>"
+    STATUS_SPLIT = "<b>FFmpeg v2.9.1</b>"
+    STATUS_ZIP = "<b>p7zip v16.02</b>"
 
+PROGRESS_MAX_SIZE = 100 // 9
+PROGRESS_INCOMPLETE = ['◔', '◔', '◑', '◑', '◑', '◕', '◕']
+# PROGRESS_INCOMPLETE = ['◌', '◌', '◎', '◎', '◎', '◍', '◍', '◍']
+# PROGRESS_INCOMPLETE = ['▤', '▤', '▦', '▦', '▦', '▩', '▩']
     
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
@@ -128,9 +132,13 @@ def get_progress_bar_string(status):
     p = 0 if total == 0 else round(completed * 100 / total)
     p = min(max(p, 0), 100)
     cFull = p // 8
-    p_str = FINISHED_PROGRESS_STR * cFull
-    p_str += UN_FINISHED_PROGRESS_STR  * (12 - cFull)
-    p_str = f"[{p_str}]"
+    cPart = p % 8 - 1
+   # p_str = '■' * cFull
+    p_str = '⬤' * cFull
+    if cPart >= 0:
+        p_str += PROGRESS_INCOMPLETE[cPart]
+    p_str += '○' * (PROGRESS_MAX_SIZE - cFull)
+    p_str = f" ⠧{p_str}⠹"
     return p_str
 
 def get_readable_message():
@@ -144,50 +152,49 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>╭📁 Name:</b> <code>{escape(str(download.name()))}</code>"
-            msg += f"\n<b>├🤖 Status:</b> <i>{download.status()}</i>"
+            msg += f"<b>╭ Name:</b> <code>{escape(str(download.name()))}</code>"
+            msg += f"\n<b>├ Status:</b> <i>{download.status()}</i>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
-                msg += f"\n<b>├</b>{get_progress_bar_string(download)} {download.progress()}"
+                msg += f"\n<b>├</b> {get_progress_bar_string(download)} {download.progress()}"
                 msg += f"\n<b>├ Processed:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
-                msg += f"\n<b>├⚡ Speed:</b> {download.speed()}"
-                msg += f"\n<b>├⏳ ETA:</b> {download.eta()}"
-                msg += f"\n<b>├⏳ Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
-                msg += f"\n<b>├⛓️ Engine :</b> {download.eng()}"
-                msg += f"\n<b>├⚠️ Warn: </b> <code>/warn {download.message.from_user.id}</code>"
+                msg += f"\n<b>├ Speed:</b> {download.speed()}"
+                msg += f"\n<b>├ ETA:</b> {download.eta()}"
+                msg += f"\n<b>├ Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
+                msg += f"\n<b>├ Engine :</b> {download.eng()}"
                 if hasattr(download, 'seeders_num'):
                     try:
-                        msg += f"\n<b>Seeders:</b> {download.seeders_num()} | <b>Leechers:</b> {download.leechers_num()}"
+                        msg += f"\n<b>├ Seeders:</b> {download.seeders_num()} | <b>Leechers:</b> {download.leechers_num()}"
                     except:
                         pass
                 if download.message.chat.type != 'private':
                     try:
                         chatid = str(download.message.chat.id)[4:]
-                        msg += f'\n<b>├🌐 Source: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
+                        msg += f'\n<b>├ Source: </b><a href="https://t.me/c/{chatid}/{download.message.message_id}">{download.message.from_user.first_name}</a> | <b>Id :</b> <code>{download.message.from_user.id}</code>'
                     except:
                         pass
                 else:
-                    msg += f'\n<b>├👤 User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
+                    msg += f'\n<b>├ User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
             
             elif download.status() == MirrorStatus.STATUS_SEEDING:
-                msg += f"\n<b>├📦 Size: </b>{download.size()}"
-                msg += f"\n<b>├⛓️ Engine:</b> <code>qBittorrent v4.4.2</code>"
-                msg += f"\n<b>├⚡ Speed: </b>{download.upload_speed()}"
-                msg += f" | <b>🔺Uploaded: </b>{download.uploaded_bytes()}"
-                msg += f"\n<b>├📎 Ratio: </b>{download.ratio()}"
-                msg += f" | <b>⏲️ Time: </b>{download.seeding_time()}"
-                msg += f"\n<b>├⏳ Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
+                msg += f"\n<b>├ Size: </b>{download.size()}"
+                msg += f"\n<b>├ Engine:</b> <code>qBittorrent v4.4.2</code>"
+                msg += f"\n<b>├ Speed: </b>{download.upload_speed()}"
+                msg += f" | <b>Uploaded: </b>{download.uploaded_bytes()}"
+                msg += f"\n<b>├ Ratio: </b>{download.ratio()}"
+                msg += f" | <b> Time: </b>{download.seeding_time()}"
+                msg += f"\n<b>├ Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
             else:
-                msg += f"\n<b>├⛓️ Engine :</b> {download.eng()}"
-                msg += f"\n<b>╰📐 Size: </b>{download.size()}"
-            msg += f"\n<b>╰❎ Cancel: </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
+                msg += f"\n<b>├ Engine :</b> {download.eng()}"
+                msg += f"\n<b>╰ Size: </b>{download.size()}"
+            msg += f"\n<b>╰ Cancel: </b><code>/{BotCommands.CancelMirror} {download.gid()}</code>"
             msg += f"\n<b>_____________________________________</b>"
             msg += "\n\n"
             if STATUS_LIMIT is not None and index == STATUS_LIMIT:
                 break
         if len(msg) == 0:
             return None, None
-        bmsg = f"<b>🖥 CPU:</b> {cpu_percent()}% | <b>💿 FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
-        bmsg += f"\n<b>🎮 RAM:</b> {virtual_memory().percent}% | <b>🟢 ONLINE:</b> {get_readable_time(time() - botStartTime)}"
+        bmsg = f"<b> CPU:</b> {cpu_percent()}% | <b> FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
+        bmsg += f"\n<b> RAM:</b> {virtual_memory().percent}% | <b> ONLINE:</b> {get_readable_time(time() - botStartTime)}"
         dlspeed_bytes = 0
         upspeed_bytes = 0
         for download in list(download_dict.values()):
@@ -293,7 +300,7 @@ def is_udrive_link(url: str):
     if 'drivehub.ws' in url:
         return 'drivehub.ws' in url
     else:
-        url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz)\.\S+', url)
+        url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz|vickyshare)\.\S+', url)
         return bool(url)
 
 def is_sharer_link(url: str):
@@ -376,7 +383,7 @@ def bot_sys_stats():
                 num_split += 1
     stats = f"Bot Statistics"
     stats += f"""
-Made with ❤️ by Weeb
+Made with ❤️ by Ajay
 Sent : {sent} | Recv : {recv}
 CPU : {cpu}% | RAM : {mem}%
 
