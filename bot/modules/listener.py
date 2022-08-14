@@ -278,7 +278,7 @@ class MirrorLeechListener:
             logleechwarn = ''
         if not self.isPrivate and INCOMPLETE_TASK_NOTIFIER and DB_URI is not None:
             DbManger().rm_complete_task(self.message.link)
-        msg = f"<b>╭🗂️ Name: </b><code>{escape(name)}</code>\n<b>├📐 Size: </b>{size}"
+        msg = f"<b>╭ Name: </b><code>{escape(name)}</code>\n<b>├📐 Size: </b>{size}"
         if self.isLeech:
             if SOURCE_LINK is True:
                 try:
@@ -288,7 +288,7 @@ class MirrorLeechListener:
                             title='WeebZone Source Link',
                             content=mesg,
                         )["path"]
-                        buttons.buildbutton(f"🔗 Source Link", f"https://telegra.ph/{link}")
+                        buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
                     elif is_url(mesg):
                         source_link = mesg
                         if source_link.startswith(("|", "pswd: ")):
@@ -309,18 +309,18 @@ class MirrorLeechListener:
                                 title='WeebZone Source Link',
                                 content=source_link,
                             )["path"]
-                            buttons.buildbutton(f"🔗 Source Link", f"https://telegra.ph/{link}")
+                            buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
                         else:
                             buttons.buildbutton(f"🔗 Source Link", source_link)
                 except Exception:
                     pass
             else:
                 pass
-            msg += f'\n<b>├📚 Total Files: </b>{folders}'
+            msg += f'\n<b>├ Total Files: </b>{folders}'
             if typ != 0:
-                msg += f'\n<b>├💀 Corrupted Files: </b>{typ}'
-            msg += f'\n<b>├⌛ It Tooks:</b> {get_readable_time(time() - self.message.date.timestamp())}'
-            msg += f'\n<b>╰👤 cc: </b>{self.tag}\n\n'
+                msg += f'\n<b>├ Corrupted Files: </b>{typ}'
+            msg += f'\n<b>├ It Tooks:</b> {get_readable_time(time() - self.message.date.timestamp())}'
+            msg += f'\n<b>╰ cc: </b>{self.tag}\n\n'
             if LEECH_LOG:
                 for i in LEECH_LOG:
                     indexmsg = ''
@@ -361,12 +361,12 @@ class MirrorLeechListener:
                     clean_target(self.newDir)
                 return			   			  
         else:
-            msg += f'\n<b>├📦 Type: </b>{typ}'
+            msg += f'\n<b>├ Type: </b>{typ}'
             if typ == "Folder":
-                msg += f'\n<b>├🗃️ SubFolders: </b>{folders}'
-                msg += f'\n<b>├🗂️ Files: </b>{files}'
-            msg += f'\n<b>├⌛ It Tooks:</b> {get_readable_time(time() - self.message.date.timestamp())}'
-            msg += f'\n<b>╰👤 cc: </b>{self.tag}\n\n'
+                msg += f'\n<b>├ SubFolders: </b>{folders}'
+                msg += f'\n<b>├ Files: </b>{files}'
+            msg += f'\n<b>├ It Tooks:</b> {get_readable_time(time() - self.message.date.timestamp())}'
+            msg += f'\n<b>╰ cc: </b>{self.tag}\n\n'
             buttons = ButtonMaker()
             link = short_url(link)
             buttons.buildbutton("☁️ Drive Link", link)
@@ -404,7 +404,7 @@ class MirrorLeechListener:
                             title='WeebZone Source Link',
                             content=mesg,
                         )["path"]
-                        buttons.buildbutton(f"🔗 Source Link", f"https://telegra.ph/{link}")
+                        buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
                     elif is_url(mesg):
                         source_link = mesg
                         if source_link.startswith(("|", "pswd: ")):
@@ -425,7 +425,7 @@ class MirrorLeechListener:
                                 title='WeebZone Source Link',
                                 content=source_link,
                             )["path"]
-                            buttons.buildbutton(f"🔗 Source Link", f"https://telegra.ph/{link}")
+                            buttons.buildbutton(f"🔗 Source Link", f"https://graph.org/{link}")
                         else:
                             buttons.buildbutton(f"🔗 Source Link", source_link)
                 except Exception:
