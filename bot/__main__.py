@@ -96,12 +96,12 @@ def getHerokuDetails(h_api_key, h_app_name):
             abc += f"<b>├ 🎃 APP USAGE:</b> {get_readable_time(AppQuotaUsed)}\n"
             abc += f"<b>├ 🗑️ OTHER APP:</b> {get_readable_time(OtherAppsUsage)}\n"
             abc += f'<b>│</b>\n'
-            abc += f'<b>╰─《 ☣️ @krn270101 ☣️ 》</b>'
+            abc += f'<b>╰─《 ☣️ @Sito404 ☣️ 》</b>'
         else:
             abc += f"<b>├ APP USAGE:</b> {get_readable_time(AppQuotaUsed)}\n"
             abc += f"<b>├ OTHER APP:</b> {get_readable_time(OtherAppsUsage)}\n"
             abc += f'<b>│</b>\n'
-            abc += f'<b>╰─《 @krn270101 》</b>'
+            abc += f'<b>╰─《 @Sito404 》</b>'
         return abc
     except Exception as g:
         LOGGER.error(g)
@@ -196,9 +196,8 @@ def stats(update, context):
 
 def start(update, context):
     buttons = ButtonMaker()
-    if EMOJI_THEME is True:
-        buttons.buildbutton("😎 Master", "https://t.me/krn_adhikari")
-        buttons.buildbutton("🔥 Group", "https://t.me/WeebZone_updates")
+  
+        buttons.buildbutton("😎 Owner", "https://t.me/sito404")
     else:
         buttons.buildbutton("Master", "https://t.me/krn_adhikari")
         buttons.buildbutton("Group", "https://t.me/WeebZone_updates")
