@@ -104,11 +104,7 @@ def getAllDownload(req_status: str):
     return None
 
 def bt_selection_buttons(id_: str):
-    if len(id_) > 20:
-        gid = id_[:12]
-    else:
-        gid = id_
-
+    gid = id_[:12] if len(id_) > 20 else id_
     pincode = ""
     for n in id_:
         if n.isdigit():
@@ -174,7 +170,7 @@ def get_readable_message():
                         pass
                 else:
                     msg += f'\n<b>├ User:</b> ️<code>{download.message.from_user.first_name}</code> | <b>Id:</b> <code>{download.message.from_user.id}</code>'
-            
+
             elif download.status() == MirrorStatus.STATUS_SEEDING:
                 msg += f"\n<b>├ Size: </b>{download.size()}"
                 msg += f"\n<b>├ Engine:</b> <code>qBittorrent v4.4.2</code>"
@@ -216,13 +212,13 @@ def get_readable_message():
                 elif 'M' in spd:
                     upspeed_bytes += float(spd.split('M')[0]) * 1048576
         bmsg += f"\n<b>🔻 DL:</b> {get_readable_file_size(dlspeed_bytes)}/s | <b>🔺 UL:</b> {get_readable_file_size(upspeed_bytes)}/s"
-        
+
         buttons = ButtonMaker()
         buttons.sbutton("Refresh", "status refresh")
         buttons.sbutton("Statistics", str(THREE))
         buttons.sbutton("Close", "status close")
         sbutton = InlineKeyboardMarkup(buttons.build_menu(3))
-        
+
         if STATUS_LIMIT is not None and tasks > STATUS_LIMIT:
             msg += f"<b>Tasks:</b> {tasks}\n"
             buttons = ButtonMaker()
@@ -289,9 +285,9 @@ def is_gdtot_link(url: str):
 def is_unified_link(url: str):
     url1 = re_match(r'https?://(anidrive|driveroot|driveflix|indidrive|drivehub)\.in/\S+', url)
     url = re_match(r'https?://(appdrive|driveapp|driveace|gdflix|drivelinks|drivebit|drivesharer|drivepro)\.\S+', url)
-    if bool(url1) == True:
+    if bool(url1):
         return bool(url1)
-    elif bool(url) == True:
+    elif bool(url):
         return bool(url)
     else:
         return False
@@ -299,9 +295,8 @@ def is_unified_link(url: str):
 def is_udrive_link(url: str):
     if 'drivehub.ws' in url:
         return 'drivehub.ws' in url
-    else:
-        url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz|vickyshare)\.\S+', url)
-        return bool(url)
+    url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz|vickyshare)\.\S+', url)
+    return bool(url)
 
 def is_sharer_link(url: str):
     url = re_match(r'https?://(sharer)\.pw/\S+', url)
@@ -381,7 +376,7 @@ def bot_sys_stats():
                 num_extract += 1
        if stats.status() == MirrorStatus.STATUS_SPLITTING:
                 num_split += 1
-    stats = f"Bot Statistics"
+    stats = "Bot Statistics"
     stats += f"""
 Made with ❤️ by Ajay
 Sent : {sent} | Recv : {recv}
@@ -395,5 +390,5 @@ Limits : T/D : {TORRENT_DIRECT_LIMIT}GB | Z/U : {ZIP_UNZIP_LIMIT}GB
 """
     return stats
 dispatcher.add_handler(
-    CallbackQueryHandler(pop_up_stats, pattern="^" + str(THREE) + "$")
+    CallbackQueryHandler(pop_up_stats, pattern=f"^{str(THREE)}$")
 )

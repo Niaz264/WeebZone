@@ -180,9 +180,7 @@ class GoogleDriveHelper:
         drive_file = self.__service.files().create(supportsTeamDrives=True,
                                                    body=file_metadata, media_body=media_body)
         response = None
-        while response is None:
-            if self.__is_cancelled:
-                break
+        while response is None and not self.__is_cancelled:
             try:
                 self.__status, response = drive_file.next_chunk()
             except HttpError as err:
@@ -381,7 +379,7 @@ class GoogleDriveHelper:
             if BUTTON_SIX_NAME is not None and BUTTON_SIX_URL is not None:
                 buttons.buildbutton(f"{BUTTON_SIX_NAME}", f"{BUTTON_SIX_URL}")
             if SOURCE_LINK is True:
-                buttons.buildbutton(f"🔗 Source Link", link)
+                buttons.buildbutton("🔗 Source Link", link)
         except Exception as err:
             if isinstance(err, RetryError):
                 LOGGER.info(f"Total Attempts: {err.last_attempt.attempt_number}")
@@ -432,7 +430,10 @@ class GoogleDriveHelper:
         file_id = file.get("id")
         if not IS_TEAM_DRIVE:
             self.__set_permission(file_id)
-        LOGGER.info("Created G-Drive Folder:\nName: {}\nID: {} ".format(file.get("name"), file_id))
+        LOGGER.info(
+            f'Created G-Drive Folder:\nName: {file.get("name")}\nID: {file_id} '
+        )
+
         return file_id
 
     def __upload_dir(self, input_directory, parent_id):
@@ -589,7 +590,6 @@ class GoogleDriveHelper:
         fileName = self.__escapes(str(fileName))
         contents_count = 0
         telegraph_content = []
-        path = []
         Title = False
         if len(DRIVES_IDS) > 1:
             token_service = self.__alt_authorize()
@@ -625,7 +625,7 @@ class GoogleDriveHelper:
                         msg += f' <b>| <a href="{url}">Index Link</a></b>'
                 elif mime_type == 'application/vnd.google-apps.shortcut':
                     msg += f"⁍<a href='https://drive.google.com/drive/folders/{file.get('id')}'>{file.get('name')}" \
-                        f"</a> (shortcut)"
+                            f"</a> (shortcut)"
                     # Excluded index link as indexes cant download or open these shortcuts
                 else:
                     furl = f"https://drive.google.com/uc?id={file.get('id')}&export=download"
@@ -656,16 +656,14 @@ class GoogleDriveHelper:
         if msg != '':
             telegraph_content.append(msg)
 
-        if len(telegraph_content) == 0:
+        if not telegraph_content:
             return "", None
 
-        for content in telegraph_content:
-            path.append(
-                telegraph.create_page(
-                    title = f'{TITLE_NAME}',
-                    content=content
-                )["path"]
-            )
+        path = [
+            telegraph.create_page(title=f'{TITLE_NAME}', content=content)["path"]
+            for content in telegraph_content
+        ]
+
         if len(path) > 1:
             telegraph.edit_telegraph(path, telegraph_content)
 
